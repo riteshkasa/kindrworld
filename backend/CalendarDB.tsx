@@ -1,3 +1,5 @@
+import { Schema } from "mongoose";
+
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -21,31 +23,19 @@ app.get("/", (req: any, res: { send: (arg0: string) => void }) => {
   res.send("API is running...");
 });
 
-const commentSchema = new mongoose.schema({
-  post: String,
-  userName: String,
-  comment: String,
-  createdAt: { type: Date, default: Date.now },
+const dateSchema = new mongoose.schema({
+  user: String,
+  completedAt: { type: Date, default: Date.now },
 });
 
-const cm = mongoose.model("KindrWorldComments", commentSchema);
+const dm = mongoose.model("KindrWorldCalendar", dateSchema);
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
-
-export function addData(p: string, un: string, comm: string) {
-  cm.create({
-    post: p,
-    userName: un,
-    comment: comm,
+export function addDate(username: String) {
+  dm.create({
+    user: username,
   });
 }
 
-export function fetchData(post: string) {
-  return cm.find({ post }).exec();
-}
-
-export function getIndivComment(commentArr: typeof cm, i: number) {
-  return cm[i];
+export function fetchData(username: string) {
+  return dm.find({ username }).exec();
 }
