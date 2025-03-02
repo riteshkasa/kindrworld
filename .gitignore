@@ -1,0 +1,8 @@
+# .gitignore
+
+node_modules/
+ios/Pods/
+*.log
+*.DS_Store
+build/
+*.iml
