@@ -1,3 +1,6 @@
+import React from "react";
+import { ScrollView } from "react-native-gesture-handler";
+
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -43,9 +46,15 @@ export function addData(p: string, un: string, comm: string) {
 }
 
 export function fetchData(post: string) {
-  return cm.find({ post }).exec();
+  return cm.find({}).exec();
 }
 
-export function getIndivComment(commentArr: typeof cm, i: number) {
-  return cm[i];
+export default function (post: string) {
+  var comments = fetchData(post);
+  return comments.array.forEach((element: any) => {
+    <ScrollView>
+      <text>{element.userName}</text>
+      <text>{element.comment}</text>
+    </ScrollView>;
+  });
 }

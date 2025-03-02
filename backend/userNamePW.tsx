@@ -1,5 +1,3 @@
-import { Schema } from "mongoose";
-
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -23,18 +21,14 @@ app.get("/", (req: any, res: { send: (arg0: string) => void }) => {
   res.send("API is running...");
 });
 
-const dateSchema = new mongoose.schema({
+const user = mongoose.schema({
   user: String,
-  streakCount: Number,
-  completedAt: { type: Date, default: Date.now },
+  password: String,
 });
 
-const dm = mongoose.model("KindrWorldCalendar", dateSchema);
+const login = mongoose.model("LoginInfo");
 
-export function updateStreak(username: String) {
-  dm.updateOne({ user: username }, { $inc: { streakCount: 1 } });
-}
-
-export function fetchData(username: string) {
-  return dm.find({ username }).exec();
+export function isValidUser(username: string, password: string) {
+  var check = user.find({ username, password });
+  return check;
 }
