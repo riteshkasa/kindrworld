@@ -1,5 +1,5 @@
 ## Inspiration
-Our inspiration for this project was actually started with our interest in books and helping the community. In high school, we struggled to find opportunities to volunteer in our community, and we wanted to give back to our communties. We hope that this project inspires others to make kind change.
+Our inspiration for this project was actually started with our interest in books and helping the community. In high school, we struggled to find opportunities to volunteer in our community, and we wanted to give back to our communities. We hope that this project inspires others to make kind change.
 
 ## What it does
 Our app connects students with volunteering opportunities in their area in a variety of their fields, and features a variety of tools to help you keep yourself accountable.
