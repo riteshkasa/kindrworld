@@ -1,14 +1,17 @@
-import React, { useState } from "react";
-import { Image, View, Text, StyleSheet, ScrollView } from "react-native";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { MultiSelect } from "react-native-element-dropdown";
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Linking } from 'react-native';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { MultiSelect } from 'react-native-element-dropdown';
 
-// Define types for Tasks and Dropdown Options
-interface Task {
+// Define types for Volunteer Opportunities and Dropdown Options
+interface VolunteerOpportunity {
   id: number;
-  name: string;
-  category: string;
+  title: string;
   location: string;
+  category: string;
+  tags: string[];
+  description: string;
+  link: string;
 }
 
 interface DropdownOption {
@@ -16,100 +19,104 @@ interface DropdownOption {
   value: string;
 }
 
-// Sample Tasks Data
-const TASKS: Task[] = [
-  {
-    id: 1,
-    name: "Clean up a park 🏞️",
-    category: "Environmental Conservation",
-    location: "Santa Monica",
-  },
-  {
-    id: 2,
-    name: "Help at a food bank 🍎",
-    category: "Poverty Relief",
-    location: "Long Beach",
-  },
-  {
-    id: 3,
-    name: "Tutor a student 📚",
-    category: "Education & Mentoring",
-    location: "Westwood",
-  },
-  {
-    id: 4,
-    name: "Visit an elderly home ❤️",
-    category: "Elderly Support",
-    location: "Beverly Hills",
-  },
-  {
-    id: 5,
-    name: "Volunteer at an animal shelter 🐶",
-    category: "Animal Welfare",
-    location: "Anaheim",
-  },
+// Define the actual places and categories (excluding "All")
+const actualPlaces = ['Westwood', 'Santa Monica', 'Beverly Hills', 'Long Beach', 'Anaheim'];
+const actualCategories = [
+  'Community Service',
+  'Environmental Conservation',
+  'Education & Mentoring',
+  'Poverty Relief',
+  'Healthcare Support',
+  'Animal Welfare',
+  'Elderly Support',
 ];
 
-// Dropdown Data
+// Dynamically generate 3 volunteer opportunities per combination of place and category
+const VOLUNTEER_OPPORTUNITIES: VolunteerOpportunity[] = [];
+let idCounter = 1;
+
+for (const place of actualPlaces) {
+  for (const category of actualCategories) {
+    // Build the search query by combining category and place.
+    const query = encodeURIComponent(`${category} ${place}`);
+    // Opportunity from VolunteerMatch
+    VOLUNTEER_OPPORTUNITIES.push({
+      id: idCounter++,
+      title: `${category} Opportunity in ${place} - VolunteerMatch`,
+      location: `${place}, CA`,
+      category,
+      tags: [category.replace(/\s/g, '').toLowerCase(), place.replace(/\s/g, '').toLowerCase()],
+      description: `Explore volunteer opportunities in ${place} for ${category} on VolunteerMatch.`,
+      link: `https://www.volunteermatch.org/search/?query=${query}`,
+    });
+    // Opportunity from All For Good
+    VOLUNTEER_OPPORTUNITIES.push({
+      id: idCounter++,
+      title: `${category} Opportunity in ${place} - AllForGood`,
+      location: `${place}, CA`,
+      category,
+      tags: [category.replace(/\s/g, '').toLowerCase(), place.replace(/\s/g, '').toLowerCase()],
+      description: `Discover ${category.toLowerCase()} volunteer opportunities in ${place} via All For Good.`,
+      link: `https://www.allforgood.org/search?q=${query}`,
+    });
+    // Opportunity from Idealist
+    VOLUNTEER_OPPORTUNITIES.push({
+      id: idCounter++,
+      title: `${category} Opportunity in ${place} - Idealist`,
+      location: `${place}, CA`,
+      category,
+      tags: [category.replace(/\s/g, '').toLowerCase(), place.replace(/\s/g, '').toLowerCase()],
+      description: `Find ideal volunteer openings in ${place} for ${category} on Idealist.`,
+      link: `https://www.idealist.org/en/volunteer-opportunities?query=${query}`,
+    });
+  }
+}
+
+// Dropdown Data including "All" option
 const places: DropdownOption[] = [
-  { label: "All", value: "All" },
-  { label: "Westwood", value: "Westwood" },
-  { label: "Santa Monica", value: "Santa Monica" },
-  { label: "Beverly Hills", value: "Beverly Hills" },
-  { label: "Long Beach", value: "Long Beach" },
-  { label: "Culver City", value: "Culver City" },
-  { label: "Anaheim", value: "Anaheim" },
+  { label: 'All', value: 'All' },
+  ...actualPlaces.map(place => ({ label: place, value: place })),
 ];
 
 const categories: DropdownOption[] = [
-  { label: "All", value: "All" },
-  { label: "Community Service", value: "Community Service" },
-  { label: "Environmental Conservation", value: "Environmental Conservation" },
-  { label: "Education & Mentoring", value: "Education & Mentoring" },
-  { label: "Poverty Relief", value: "Poverty Relief" },
-  { label: "Healthcare Support", value: "Healthcare Support" },
-  { label: "Animal Welfare", value: "Animal Welfare" },
-  { label: "Elderly Support", value: "Elderly Support" },
+  { label: 'All', value: 'All' },
+  ...actualCategories.map(category => ({ label: category, value: category })),
 ];
 
 const TaskFilterScreen: React.FC = () => {
-  const [selectedPlaces, setSelectedPlaces] = useState<string[]>(["All"]);
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([
-    "All",
-  ]);
+  const [selectedPlaces, setSelectedPlaces] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
-  // Filter Tasks Based on Selections
-  const filteredTasks = TASKS.filter((task) => {
+  // Filter opportunities based on selected place(s) and category(ies)
+  const filteredOpportunities = VOLUNTEER_OPPORTUNITIES.filter((opportunity) => {
     const placeMatch =
-      selectedPlaces.includes("All") || selectedPlaces.includes(task.location);
+      selectedPlaces.length === 0 ||
+      selectedPlaces.includes('All') ||
+      selectedPlaces.includes(opportunity.location.split(',')[0]);
     const categoryMatch =
-      selectedCategories.includes("All") ||
-      selectedCategories.includes(task.category);
+      selectedCategories.length === 0 ||
+      selectedCategories.includes('All') ||
+      selectedCategories.includes(opportunity.category);
     return placeMatch && categoryMatch;
   });
+
+  // Open the volunteer opportunity link in the device's browser
+  const handleLinkPress = (url: string) => {
+    Linking.openURL(url);
+  };
 
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
-        <View style={styles.headerContent}>
-          <View>
-            <View style={styles.welcomeContent}>
-              <Text style={styles.welcomeText}>Volunteering Opportunities</Text>
-              <Image
-                source={require("../../assets/images/kindrworld.png")}
-                style={styles.logo}
-              />
-            </View>
-          </View>
-        </View>
-
         <Text style={styles.headerText}>Filter by Location</Text>
         <MultiSelect
           data={places}
           labelField="label"
           valueField="value"
           value={selectedPlaces}
-          onChange={(selected) => setSelectedPlaces(selected)}
+          onChange={(selected) =>
+            setSelectedPlaces(selected)
+          }
           placeholder="Select Places"
           style={styles.dropdown}
           selectedStyle={styles.selectedStyle}
@@ -121,22 +128,34 @@ const TaskFilterScreen: React.FC = () => {
           labelField="label"
           valueField="value"
           value={selectedCategories}
-          onChange={(selected) => setSelectedCategories(selected)}
+          onChange={(selected) =>
+            setSelectedCategories(selected)
+          }
           placeholder="Select Categories"
           style={styles.dropdown}
           selectedStyle={styles.selectedStyle}
         />
 
-        <Text style={styles.headerText}>Filtered Tasks</Text>
+        <Text style={styles.headerText}>Filtered Volunteer Opportunities</Text>
         <ScrollView style={styles.scrollableContainer}>
-          {filteredTasks.length > 0 ? (
-            filteredTasks.map((task) => (
-              <View key={task.id} style={styles.task}>
-                <Text style={styles.taskText}>{task.name}</Text>
+          {filteredOpportunities.length > 0 ? (
+            filteredOpportunities.map((opportunity) => (
+              <View key={opportunity.id} style={styles.opportunity}>
+                <Text style={styles.titleText}>{opportunity.title}</Text>
+                <Text style={styles.locationText}>{opportunity.location}</Text>
+                <Text style={styles.descriptionText}>{opportunity.description}</Text>
+                <Text style={styles.tagsText}>
+                  Tags: {opportunity.tags.join(', ')}
+                </Text>
+                <TouchableOpacity onPress={() => handleLinkPress(opportunity.link)}>
+                  <Text style={styles.linkText}>View Opportunity</Text>
+                </TouchableOpacity>
               </View>
             ))
           ) : (
-            <Text style={styles.noTasksText}>No tasks available.</Text>
+            <Text style={styles.noOpportunitiesText}>
+              No opportunities available.
+            </Text>
           )}
         </ScrollView>
       </SafeAreaView>
@@ -145,55 +164,38 @@ const TaskFilterScreen: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, backgroundColor: "#68A678" },
-  headerText: {
-    fontSize: 16,
-    fontWeight: "bold",
-    marginTop: 10,
-    fontFamily: "Cochin",
-  },
+  container: { flex: 1, padding: 20, backgroundColor: '#68A678' },
+  headerText: { fontSize: 20, fontFamily: 'Cochin', fontWeight: 'bold', marginTop: 10, color: 'white' },
   dropdown: {
     marginVertical: 10,
     borderWidth: 1,
-    borderColor: "#ddd",
+    borderColor: '#ddd',
     borderRadius: 8,
-    fontFamily: "Cochin",
     padding: 10,
   },
-  selectedStyle: { backgroundColor: "#f0f0f0", borderRadius: 5 },
-  scrollableContainer: { marginTop: 10, maxHeight: 200 },
-  task: {
+  selectedStyle: { backgroundColor: '#f0f0f0', borderRadius: 5 },
+  scrollableContainer: { marginTop: 10, maxHeight: 300 },
+  opportunity: {
     padding: 10,
-    backgroundColor: "#e6f7ff",
+    backgroundColor: '#e6f7ff',
     marginVertical: 5,
     borderRadius: 5,
   },
-  taskText: { fontSize: 16, fontFamily: "Cochin" },
-  noTasksText: {
-    textAlign: "center",
+  titleText: { fontSize: 18, fontWeight: 'bold' },
+  locationText: { fontSize: 14, color: 'gray' },
+  descriptionText: { fontSize: 14, marginVertical: 5 },
+  tagsText: { fontSize: 12, color: 'blue' },
+  linkText: {
+    fontSize: 14,
+    color: 'green',
+    textDecorationLine: 'underline',
+    marginTop: 5,
+  },
+  noOpportunitiesText: {
+    textAlign: 'center',
     marginTop: 20,
     fontSize: 16,
-    color: "gray",
-  },
-  headerContent: {
-    backgroundColor: "#002D04",
-    borderRadius: 8,
-    padding: 16,
-  },
-  welcomeContent: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  welcomeText: {
-    fontFamily: "Cochin",
-    fontSize: 30,
-    color: "white",
-  },
-  logo: {
-    width: 50,
-    height: 50,
-    resizeMode: "contain",
+    color: 'gray',
   },
 });
 

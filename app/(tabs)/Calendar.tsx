@@ -1,37 +1,54 @@
-import React, { useState } from "react";
-import { View, Text, Button } from "react-native";
-import { Calendar } from "react-native-calendars";
+//   const setTodaysDate = () => {
+//     setSelectedDate(new Date().toISOString().split("T")[0]);
+//   };
+//   return (
+//     <View style={{ flex: 1, padding: 20 }}>
+//       <Button title="Task done for today" onPress={setTodaysDate} />
+//       <Text>Selected Date: {selectedDate}</Text>
+//       <MyCalendar
+//         selectedDate={selectedDate}
+//         setSelectedDate={setSelectedDate}
+//       />
+//     </View>
+//   );
+// };
 
-const CalendarView = () => {
-  const [selectedDate, setSelectedDate] = useState("");
+// const MyCalendar = ({ selectedDate, setSelectedDate }) => {
+//   const [markedDates, setMarkedDates] = useState({});
+//   vals = fetchData(localUser);
+//   useEffect(() => {
+//     const username = "someUsername"; // Replace with actual username
+//     const newMarkedDates = {};
+//     vals.forEach((date) => {
+//       newMarkedDates[date] = { selected: true, selectedColor: "blue" };
+//     });
+//     setMarkedDates(newMarkedDates);
+//   }, []);
 
-  const setTodaysDate = () => {
-    setSelectedDate(new Date().toISOString().split("T")[0]); // Set today's date in YYYY-MM-DD format
-  };
+//   const handleDayPress = (day) => {
+//     setSelectedDate(day.dateString);
+//     vals.add(day.dateString);
+//     updateStreak("someUsername", vals); // Replace with actual username
 
-  return (
-    <View style={{ flex: 1, padding: 20 }}>
-      <Button title="Task done for today" onPress={setTodaysDate} />
-      <Text>Selected Date: {selectedDate}</Text>
-      <MyCalendar
-        selectedDate={selectedDate}
-        setSelectedDate={setSelectedDate}
-      />
-    </View>
-  );
-};
+//     setMarkedDates((prevMarkedDates) => ({
+//       ...prevMarkedDates,
+//       [day.dateString]: { selected: true, selectedColor: "blue" },
+//     }));
+//   };
 
-const MyCalendar = ({ selectedDate, setSelectedDate }) => {
-  return (
-    <View style={{ flex: 1, padding: 10, backgroundColor: "#fff" }}>
-      <Calendar
-        onDayPress={(day) => setSelectedDate(day.dateString)}
-        markedDates={{
-          [selectedDate]: { selected: true, selectedColor: "blue" },
-        }}
-      />
-    </View>
-  );
-};
+//   return (
+//     <View style={{ flex: 1, padding: 10, backgroundColor: "#fff" }}>
+//       <Calendar
+//         onDayPress={handleDayPress}
+//         markedDates={{
+//           [selectedDate]: { selected: true, selectedColor: "blue" },
+//         }}
+//       />
+//     </View>
+//   );
+// };
 
-export default CalendarView;
+// export default CalendarView;
+// function useEffect(arg0: () => void, arg1: never[]) {
+//   throw new Error("Function not implemented.");
+// }

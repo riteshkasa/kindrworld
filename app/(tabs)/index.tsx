@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Platform, StatusBar, SectionList } from 'react-native';
+import { Image, StyleSheet, Platform, StatusBar, SectionList, TouchableOpacity } from 'react-native';
 import {Button, View, Text, Alert, TextInput, ScrollView } from 'react-native';
 import {SafeAreaView, SafeAreaProvider} from 'react-native-safe-area-context';
 import { HelloWave } from '@/components/HelloWave';
@@ -148,18 +148,25 @@ const formattedDate = currentDate.toLocaleDateString('en-US', {
 
 var randomNumbers: number[] = [];
 while(randomNumbers.length < 8){
-    var r = Math.floor(Math.random() * TASKS.length) + 1;
+    var r = Math.floor(Math.random() * 100) + 1;
     if(randomNumbers.indexOf(r) === -1) randomNumbers.push(r);
 }
 
-const task1 = TASKS[randomNumbers[0]];
-
-
 export default function HomeScreen() {
-  const [userTask, setText] = useState('');
+  const [randomNumbers, setRandomNumbers] = useState<number[]>(generateRandomNumbers());
 
+  function generateRandomNumbers() {
+    const numbers: number[] = [];
+    while (numbers.length < 8) {
+      const r = Math.floor(Math.random() * TASKS.length);
+      if (!numbers.includes(r)) numbers.push(r);
+    }
+    return numbers;
+  }
 
-
+  const regenerateTasks = () => {
+    setRandomNumbers(generateRandomNumbers());
+  };
 
   return (
     <SafeAreaProvider>
@@ -184,7 +191,12 @@ export default function HomeScreen() {
 
         {/* Tasks */}
         <View style={styles.taskContainer}>
-          <Text style={styles.headerText}>Daily Generated Tasks</Text>
+          <View style={styles.headerRow}>
+            <Text style={styles.headerText}>Daily Generated Tasks</Text>
+            <TouchableOpacity style={styles.button} onPress={regenerateTasks}>
+              <Text style={styles.buttonText}>Regenerate</Text>
+            </TouchableOpacity>
+          </View>
           <ScrollView style={styles.scrollableContainer}>
             {randomNumbers.map((number, index) => (
               <View key={index} style={styles.task}>
@@ -192,16 +204,7 @@ export default function HomeScreen() {
               </View>
             ))}
           </ScrollView>   
-          <Text style={styles.headerText}>Create your own Task!</Text>
-            <View style={styles.task}>
-              <TextInput
-                style={styles.baseText}
-                placeholder="Type Here"
-                placeholderTextColor="gray"
-                onChangeText={userTask => setText(userTask)}
-              />
-            </View>
-        </View>   
+        </View>  
   
       </SafeAreaView>
     </SafeAreaProvider>
@@ -233,23 +236,34 @@ const styles = StyleSheet.create({
     fontSize: 40,
     color: 'white',
   },
-  titleText: {
-    marginTop: 10,
-    fontFamily: 'Cochin',
-    fontSize: 30,
-    color: 'white',
+  headerRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10,
   },
   headerText: {
     fontFamily: 'Cochin',
-    fontSize: 30,
+    fontSize: 20,
     color: 'white',
-    marginBottom: 10,
-    marginTop: 10,
   },
   baseText: {
     fontFamily: 'Cochin',
     fontSize: 17,
     color: 'white',
+  },
+  button: {
+    backgroundColor: '#002D04',
+    borderRadius: 8,
+    padding: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 120,
+  },
+  buttonText: {
+    color: 'white',
+    fontFamily: 'Cochin',
+    fontSize: 17,
   },
   taskContainer: {
     flex: 1,
@@ -258,12 +272,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   scrollableContainer: {
-    maxHeight: 400,
-  },
-  item: {
-    backgroundColor: '#f9c2ff',
-    padding: 20,
-    marginVertical: 8,
+    maxHeight: 450,
   },
   logo: {
     width: 50,
