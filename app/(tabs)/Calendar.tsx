@@ -1,19 +1,14 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { View, Text, Button } from "react-native";
 import { Calendar } from "react-native-calendars";
-import "./CalendarDB";
-import { fetchData, updateStreak } from "./CalendarDB";
-
-var vals = new Set<string>();
-var localUser = "";
 
 const CalendarView = () => {
   const [selectedDate, setSelectedDate] = useState("");
 
   const setTodaysDate = () => {
-    setSelectedDate(new Date().toISOString().split("T")[0]);
+    setSelectedDate(new Date().toISOString().split("T")[0]); // Set today's date in YYYY-MM-DD format
   };
+
   return (
     <View style={{ flex: 1, padding: 20 }}>
       <Button title="Task done for today" onPress={setTodaysDate} />
@@ -27,32 +22,10 @@ const CalendarView = () => {
 };
 
 const MyCalendar = ({ selectedDate, setSelectedDate }) => {
-  const [markedDates, setMarkedDates] = useState({});
-  vals = fetchData(localUser);
-  useEffect(() => {
-    const username = "someUsername"; // Replace with actual username
-    const newMarkedDates = {};
-    vals.forEach((date) => {
-      newMarkedDates[date] = { selected: true, selectedColor: "blue" };
-    });
-    setMarkedDates(newMarkedDates);
-  }, []);
-
-  const handleDayPress = (day) => {
-    setSelectedDate(day.dateString);
-    vals.add(day.dateString);
-    updateStreak("someUsername", vals); // Replace with actual username
-
-    setMarkedDates((prevMarkedDates) => ({
-      ...prevMarkedDates,
-      [day.dateString]: { selected: true, selectedColor: "blue" },
-    }));
-  };
-
   return (
     <View style={{ flex: 1, padding: 10, backgroundColor: "#fff" }}>
       <Calendar
-        onDayPress={handleDayPress}
+        onDayPress={(day) => setSelectedDate(day.dateString)}
         markedDates={{
           [selectedDate]: { selected: true, selectedColor: "blue" },
         }}
@@ -62,6 +35,3 @@ const MyCalendar = ({ selectedDate, setSelectedDate }) => {
 };
 
 export default CalendarView;
-function useEffect(arg0: () => void, arg1: never[]) {
-  throw new Error("Function not implemented.");
-}
