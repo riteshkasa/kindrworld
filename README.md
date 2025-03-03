@@ -1,4 +1,25 @@
-# Welcome to your Expo app 👋
+## Inspiration
+Our inspiration for this project was actually started with our interest in books and helping the community. In high school, we struggled to find opportunities to volunteer in our community, and we wanted to give back to our communties. We hope that this project inspires others to make kind change.
+
+## What it does
+Our app connects students with volunteering opportunities in their area in a variety of their fields, and features a variety of tools to help you keep yourself accountable.
+
+## How we built it
+We used React Native and a MongoDB backend.
+
+## Challenges we ran into
+We ran into a variety of problems with react, as we're all new to web development. Particularly, there were a few backend issues which led to us having to scrap features.
+
+## Accomplishments that we're proud of
+We're happy to have a completed web app since none of us have made one before and we had little to no experience with web development!
+
+## What we learned
+We learned a lot of the fundamentals of React, and things like using APIs and using databases.
+
+## What's next for KindrWorld
+We want to expand KindrWorld to not be limited to just LA as well as implement the features we had to previously scrap such as a streak calendar and scraping volunteering opportunities to add to our MongoDB database.
+
+
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
