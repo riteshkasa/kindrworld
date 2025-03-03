@@ -1,4 +1,3 @@
-import React from "react";
 import React, { useState } from "react";
 import { Image, View, Text, StyleSheet, ScrollView } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
