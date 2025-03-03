@@ -1,5 +1,6 @@
 import React from "react";
 import { ScrollView } from "react-native-gesture-handler";
+import { View } from "react-native-reanimated/lib/typescript/Animated";
 
 const express = require("express");
 const mongoose = require("mongoose");
@@ -52,9 +53,9 @@ export function fetchData(post: string) {
 export default function (post: string) {
   var comments = fetchData(post);
   return comments.array.forEach((element: any) => {
-    <ScrollView>
+    <View>
       <text>{element.userName}</text>
       <text>{element.comment}</text>
-    </ScrollView>;
+    </View>;
   });
 }

@@ -25,14 +25,13 @@ app.get("/", (req: any, res: { send: (arg0: string) => void }) => {
 
 const dateSchema = new mongoose.schema({
   user: String,
-  streakCount: Number,
-  completedAt: { type: Date, default: Date.now },
+  dates: Set,
 });
 
 const dm = mongoose.model("KindrWorldCalendar", dateSchema);
 
-export function updateStreak(username: String) {
-  dm.updateOne({ user: username }, { $inc: { streakCount: 1 } });
+export function updateStreak(username: String, datesList: Set<any>) {
+  dm.updateOne({ user: username, dates: datesList });
 }
 
 export function fetchData(username: string) {
