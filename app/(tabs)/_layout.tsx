@@ -5,7 +5,7 @@ import { Platform } from 'react-native';
 import { HapticTab } from '@/components/HapticTab';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-import Octicons from '@expo/vector-icons/Octicons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
@@ -32,8 +32,8 @@ export default function TabLayout() {
       <Tabs.Screen
         name="explore"
         options={{
-          title: 'Discussion',
-          tabBarIcon: ({ color }) => <Octicons name="comment-discussion" color={color} size={28}/>,
+          title: 'Volunteer',
+          tabBarIcon: ({ color }) => <MaterialIcons name="volunteer-activism" color={color} size={28}/>,
         }}
       />
     </Tabs>
