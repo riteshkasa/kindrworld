@@ -1,5 +1,5 @@
 import { Image, StyleSheet, Platform, StatusBar, SectionList } from 'react-native';
-import {Button, View, Text, Alert, TextInput} from 'react-native';
+import {Button, View, Text, Alert, TextInput, ScrollView } from 'react-native';
 import {SafeAreaView, SafeAreaProvider} from 'react-native-safe-area-context';
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
@@ -8,107 +8,135 @@ import { ThemedView } from '@/components/ThemedView';
 import React, {useState} from 'react';
 
 const TASKS = [
-  'Hold the door open for someone',
-  'Give a genuine compliment',
-  'Pick up one piece of litter',
-  'Let someone go ahead in line',
-  'Send a "just thinking of you" message',
-  'Smile at a stranger',
-  'Say thank you with eye contact',
-  'Write a positive review for a local business',
-  'Offer your seat on public transport',
-  'Recycle one item today',
-  'Help someone carry something heavy',
-  'Return a misplaced shopping cart',
-  'Wave and say hi to a neighbor',
-  'Share your umbrella in the rain',
-  'Donate spare change to a charity jar',
-  'Encourage someone who seems down',
-  'Hold the elevator for someone',
-  'Give an extra tip to a service worker',
-  'Share a helpful resource online',
-  'Let a car merge in front of you',
-  'Say "Good morning" to a stranger',
-  'Write a thank-you note to a teacher or mentor',
-  'Share an inspirational post on social media',
-  'Bring an extra snack to share',
-  'Water a thirsty plant in a public space',
-  'Turn off lights in empty rooms',
-  'Help someone find something they dropped',
-  'Offer directions to someone who looks lost',
-  'Leave a positive sticky note in a public place',
-  'Check in on an elderly neighbor',
-  'Help a parent struggling with a stroller',
-  'Hold back from honking in traffic',
-  'Write a kind comment on a social media post',
-  'Pick up a fallen bike or scooter',
-  'Leave a book in a little free library',
-  'Tell a coworker they’re doing a great job',
-  'Share your Wi-Fi hotspot with someone in need',
-  'Help a friend with a small task',
-  'Encourage someone pursuing a goal',
-  'Refill the printer paper at work or school',
-  'Offer your shopping cart to someone else',
-  'Give your pet some extra love today',
-  'Turn in a lost item to the lost and found',
-  'Let someone have the last piece of something',
-  'Give a heartfelt apology if you need to',
-  'Offer to take a photo for a group',
-  'Help someone reach an item on a high shelf',
-  'Greet the cashier with a smile',
-  'Share your notes with a classmate',
-  'Remind someone to drink water',
-  'Give your spot in line to someone in a rush',
-  'Thank a janitor or maintenance worker',
-  'Offer to babysit for free',
-  'Let someone borrow a charger',
-  'Say "excuse me" and be polite in crowds',
-  'Turn off someone’s forgotten car headlights',
-  'Write a quick gratitude list',
-  'Check in on a friend who had a tough day',
-  'Listen fully without interrupting',
-  'Tell a joke to lighten someone’s mood',
-  'Offer your phone for an important call',
-  'Suggest a fun activity to a lonely friend',
-  'Send a positive email at work or school',
-  'Put coins in an expired parking meter',
-  'Share your knowledge with someone struggling',
-  'Leave a nice tip on a bill',
-  'Thank a bus driver or taxi driver',
-  'Give a like or boost to a small creator',
-  'Help someone load their groceries',
-  'Offer gum or mints to a friend',
-  'Share an extra napkin or tissue',
-  'Recommend a good book to someone',
-  'Hold a package delivery for a neighbor',
-  'Help someone set up their tech device',
-  'Let a child have the better view',
-  'Say "Have a great day!" with sincerity',
-  'Donate a can of food to a pantry',
-  'Put your phone away in a conversation',
-  'Help a tourist with directions',
-  'Compliment a coworker’s effort',
-  'Give a thumbs up to a street performer',
-  'Send a supportive message to a creator',
-  'Wish someone a happy birthday early',
-  'Listen to someone’s story without judgment',
-  'Pause and let someone cross the street',
-  'Help clean up after a group event',
-  'Recommend a helpful app or tool',
-  'Help someone organize their things',
-  'Share a kind memory about someone',
-  'Make space for someone to sit',
-  'Write a note of encouragement for yourself',
-  'Pass on an extra coupon to someone',
-  'Share your meal with someone in need',
-  'Help a pet owner with their leash or bags',
-  'Take a moment to breathe and be kind',
-  'Encourage someone trying something new',
-  'Be patient in a slow-moving line',
-  'Remind someone they are appreciated',
-  'Leave a kind note on a coworker’s desk',
-  'Tell someone they inspired you',
-  'Make someone laugh today'
+  'Practice active listening 👂',
+  'Compliment someone honestly 😊',
+  'Help a friend with a task 🤝',
+  'Offer encouragement to someone struggling 💪',
+  'Spend time with someone who needs company 👥',
+  'Apologize sincerely when you’re wrong 🙏',
+  'Express gratitude daily 🙌',
+  'Make time for self-care 🛁',
+  'Set a goal and work towards it 🎯',
+  'Read at least 10 pages of a book daily 📖',
+  'Practice mindfulness for 5 minutes 🧘',
+  'Help someone carry something heavy 🏋️',
+  'Support a local business 🏪',
+  'Volunteer your time or skills ⏳',
+  'Take a break when you need it 🧘‍♀️',
+  'Organize your space for better focus 🧹',
+  'Listen without interrupting 🗣️',
+  'Learn something new every day 🎓',
+  'Forgive someone, even if they don’t ask for it 💖',
+  'Give someone a smile 😁',
+  'Pay it forward with a kind gesture 🚗',
+  'Pick up litter when you see it 🗑️',
+  'Avoid gossip and speak kindly about others 🗣️',
+  'Take the time to be present and mindful 🧠',
+  'Show appreciation to those who help you 🙏',
+  'Be patient with others ⏳',
+  'Take responsibility for your actions 👥',
+  'Eat a healthy meal 🥗',
+  'Offer to help a neighbor with something 🏠',
+  'Express your feelings honestly 💬',
+  'Write down three things you’re grateful for 📝',
+  'Be open to constructive criticism 🧐',
+  'Celebrate others’ successes 🎉',
+  'Share a positive article or story 📚',
+  'Be on time for meetings or appointments ⏰',
+  'Be generous with your time ⏳',
+  'Avoid multitasking for better focus 🎯',
+  'Give your full attention during conversations 👂',
+  'Reduce your screen time for more real-life connections 📱',
+  'Help someone solve a problem 🧩',
+  'Check in on a friend or family member 🤗',
+  'Learn a new skill or hobby 🎨',
+  'Set healthy boundaries in relationships 🚧',
+  'Make a to-do list and prioritize tasks 📋',
+  'Practice gratitude for what you have 🙏',
+  'Laugh every day 😂',
+  'Focus on what you can control 🛠️',
+  'Ask for help when you need it 🤲',
+  'Support a cause you care about 🌱',
+  'Mentor someone younger or less experienced 🧑‍🏫',
+  'Give your best effort, even on small tasks 💪',
+  'Be kind to yourself when you make mistakes 💖',
+  'Reflect on your day before bed 🛏️',
+  'Take deep breaths when you’re feeling stressed 🌬️',
+  'Give a thoughtful gift to someone 🎁',
+  'Respect others’ opinions, even if you disagree 🧠',
+  'Accept that not everything is in your control 🌍',
+  'Help a stranger when they need assistance 🙋',
+  'Simplify your schedule for better balance 📅',
+  'Take care of your physical health 💪',
+  'Have a growth mindset 🌱',
+  'Stop and enjoy the little moments ⏳',
+  'Unplug and take a tech-free break 📴',
+  'Celebrate small wins along the way 🏅',
+  'Be empathetic to those around you 🧡',
+  'Take time to be creative 🎨',
+  'Ask someone how their day is going 💬',
+  'Be mindful of your body language 💃',
+  'Stay organized to reduce stress 📂',
+  'Give someone a genuine thank you 🙏',
+  'Say no when you need to 🛑',
+  'Make a positive impact with your words 🗣️',
+  'Help clean up after an event 🧽',
+  'Do something kind for your community 🌍',
+  'Express your needs clearly 💬',
+  'Give a stranger a compliment ✨',
+  'Share your experiences to help others 📚',
+  'Encourage someone to take care of themselves 🧖‍♀️',
+  'Make an effort to learn from others 🧠',
+  'Do something you love every day 🎶',
+  'Offer words of support to someone who is down 🗣️',
+  'Cultivate patience when things are difficult ⏳',
+  'Do one thing to make your environment better 🌳',
+  'Avoid making assumptions about others 🤔',
+  'Plan for the future while enjoying the present 🕰️',
+  'Be a role model for others 🌟',
+  'Laugh at your own mistakes 😂',
+  'Get outside for some fresh air 🌳',
+  'Focus on solutions, not problems 💡',
+  'Find joy in everyday tasks 🧹',
+  'Practice saying positive affirmations 🗣️',
+  'Set aside time for deep thinking 🤔',
+  'Embrace change as an opportunity for growth 🌱',
+  'Get to know someone new 🫂',
+  'Offer to mentor someone 📚',
+  'Help someone achieve their goals 🎯',
+  'Take time to enjoy nature 🌺',
+  'Be mindful of your impact on the environment 🌍',
+  'Think before you speak 🧠',
+  'Smile at everyone you meet 😊',
+  'Be grateful for the lessons in difficult moments 📚',
+  'Find something to be grateful for, even on tough days 💖',
+  'Try to understand someone’s perspective 🧐',
+  'Reflect on your own behavior and how to improve 🧠',
+  'Appreciate the people in your life 🙏',
+  'Work on developing a new habit 🔄',
+  'Surround yourself with positive influences 🌟',
+  'Give yourself time to rest and recharge ⚡',
+  'Check your privilege and practice humility 🤲',
+  'Try to be a better listener every day 👂',
+  'Notice the good in others 🥰',
+  'Spend time with people who inspire you ✨',
+  'Make a list of your strengths 💪',
+  'Help others see the positives in their lives 🌟',
+  'Focus on personal growth over perfection 🌱',
+  'Be authentic and true to yourself 💯',
+  'Use your time wisely ⏰',
+  'Encourage creativity in others 🎨',
+  'Be present with those you care about 🫂',
+  'Give others the benefit of the doubt 🧠',
+  'Forgive yourself for past mistakes 💖',
+  'Take care of your mental health 💭',
+  'Find ways to reduce stress in your life 🌿',
+  'Take pride in your progress, not just the end result 🏅',
+  'Support others in their personal growth 🌱',
+  'Give credit where credit is due 🏅',
+  'Ask for feedback to improve 🧠',
+  'Celebrate others’ uniqueness ✨',
+  'Work on becoming a better version of yourself 🌟'
 ];
 
 const currentDate = new Date();
@@ -118,16 +146,13 @@ const formattedDate = currentDate.toLocaleDateString('en-US', {
   year: 'numeric'
 });
 
-var arr = [];
-while(arr.length < 4){
+var randomNumbers: number[] = [];
+while(randomNumbers.length < 8){
     var r = Math.floor(Math.random() * TASKS.length) + 1;
-    if(arr.indexOf(r) === -1) arr.push(r);
+    if(randomNumbers.indexOf(r) === -1) randomNumbers.push(r);
 }
 
-const task1 = TASKS[arr[0]];
-const task2 = TASKS[arr[1]];
-const task3 = TASKS[arr[2]];
-const task4 = TASKS[arr[3]];
+const task1 = TASKS[randomNumbers[0]];
 
 
 export default function HomeScreen() {
@@ -147,30 +172,27 @@ export default function HomeScreen() {
               <Text style={styles.welcomeText}>Welcome!</Text>
               <Text style={styles.baseText}>{formattedDate}</Text>
             </View>
-            <Text style={styles.baseText}>Help Build a KindrWorld</Text>
-            {/* <Image 
-              source={require('../../assets/images/Blink Logo.png')}
-              style={styles.logo}
-            /> */}
+            <View style={styles.welcomeContent}>
+              <Text style={styles.baseText}>Help Build a KindrWorld</Text>
+              <Image 
+                source={require('../../assets/images/kindrworld.png')}
+                style={styles.logo}
+              />
+            </View>
           </View>
         </View>
 
         {/* Tasks */}
         <View style={styles.taskContainer}>
-          <Text style={styles.titleText}>Daily Generated Tasks</Text>
-          <View style={styles.task}>
-            <Text style={styles.baseText}>{task1}</Text>
-          </View>
-          <View style={styles.task}>
-            <Text style={styles.baseText}>{task2}</Text>
-          </View>
-          <View style={styles.task}>
-            <Text style={styles.baseText}>{task3}</Text>
-          </View>
-          <View style={styles.task}>
-            <Text style={styles.baseText}>{task4}</Text>
-          </View>
-          <Text style={styles.titleText}>Create your own Task!</Text>
+          <Text style={styles.headerText}>Daily Generated Tasks</Text>
+          <ScrollView style={styles.scrollableContainer}>
+            {randomNumbers.map((number, index) => (
+              <View key={index} style={styles.task}>
+                <Text style={styles.baseText}>{TASKS[number]}</Text>
+              </View>
+            ))}
+          </ScrollView>   
+          <Text style={styles.headerText}>Create your own Task!</Text>
             <View style={styles.task}>
               <TextInput
                 style={styles.baseText}
@@ -178,9 +200,9 @@ export default function HomeScreen() {
                 placeholderTextColor="gray"
                 onChangeText={userTask => setText(userTask)}
               />
-          </View>
-        </View>        
-        
+            </View>
+        </View>   
+  
       </SafeAreaView>
     </SafeAreaProvider>
   );
@@ -188,10 +210,11 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   task: {
-    width: 250,
+    width: 300,
     backgroundColor: '#002D04', 
     borderRadius: 8,
-    padding: 30,
+    padding: 20,
+    marginBottom: 12,
     marginRight: 12,
     marginLeft: 12,
   },
@@ -207,7 +230,7 @@ const styles = StyleSheet.create({
   },
   welcomeText: {
     fontFamily: 'Cochin',
-    fontSize: 50,
+    fontSize: 40,
     color: 'white',
   },
   titleText: {
@@ -215,28 +238,36 @@ const styles = StyleSheet.create({
     fontFamily: 'Cochin',
     fontSize: 30,
     color: 'white',
-    marginBottom: 10,
   },
   headerText: {
     fontFamily: 'Cochin',
     fontSize: 30,
     color: 'white',
-    backgroundColor: '#002D04',
+    marginBottom: 10,
+    marginTop: 10,
   },
   baseText: {
     fontFamily: 'Cochin',
-    fontSize: 15,
+    fontSize: 17,
     color: 'white',
   },
   taskContainer: {
     flex: 1,
-    gap: 10,
+    gap: 0,
     backgroundColor: '#68A678',
     padding: 10,
+  },
+  scrollableContainer: {
+    maxHeight: 400,
   },
   item: {
     backgroundColor: '#f9c2ff',
     padding: 20,
     marginVertical: 8,
+  },
+  logo: {
+    width: 50,
+    height: 50,
+    resizeMode: 'contain',
   },
 });
